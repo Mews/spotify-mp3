@@ -4,7 +4,7 @@ import requests
 from io import BytesIO
 
 
-class Track:
+class SpotifyTrack:
     def __init__(self, 
                  name:str, 
                  artists:List[str],
@@ -17,7 +17,20 @@ class Track:
         self.cover = cover
 
 
-def track_from_spotify_data(raw_track_data):
+class YoutubeTrack:
+    def __init__(self, 
+                 name:str, 
+                 artists:List[str],
+                 length_ms:int,
+                 cover:Image) -> None:
+        
+        self.name = name
+        self.artists = artists
+        self.length_ms = length_ms
+        self.cover = cover
+
+
+def track_from_spotify_data(raw_track_data) -> SpotifyTrack:
     from pprint import pprint
 
     with open("rawtrackdata.txt", "w", encoding="utf-8") as out:
@@ -47,7 +60,7 @@ def track_from_spotify_data(raw_track_data):
     cover_data = requests.get(highest_quality_image["url"]).content
     cover = Image.open(BytesIO(cover_data))
 
-    return Track(name=name,
+    return SpotifyTrack(name=name,
                  artists=artists,
                  length_ms=length_ms,
                  cover=cover)
