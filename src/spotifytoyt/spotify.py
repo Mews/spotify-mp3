@@ -1,15 +1,16 @@
+from io import BytesIO
 from typing import List
 
+import requests
 import spotipy
+from PIL import Image
 from spotipy.oauth2 import SpotifyClientCredentials
 from track import SpotifyTrack, get_track_from_spotify_data
 
-import requests
-from io import BytesIO
 
-from PIL import Image
-
-def get_track_from_spotify_data(raw_track_data, download_cover:bool = True) -> SpotifyTrack:
+def get_track_from_spotify_data(
+    raw_track_data, download_cover: bool = True
+) -> SpotifyTrack:
     name = raw_track_data["name"]
 
     length_ms = raw_track_data["duration_ms"]
@@ -39,7 +40,6 @@ def get_track_from_spotify_data(raw_track_data, download_cover:bool = True) -> S
         cover = None
 
     return SpotifyTrack(name=name, artists=artists, length_ms=length_ms, cover=cover)
-
 
 
 def create_spotify_client(client_id: str, client_secret: str) -> spotipy.Spotify:
@@ -82,7 +82,8 @@ def get_playlist_tracks(
     result = client.playlist_tracks(playlist_url)
 
     tracks = [
-        get_track_from_spotify_data(track_data["track"]) for track_data in result["items"]
+        get_track_from_spotify_data(track_data["track"])
+        for track_data in result["items"]
     ]
 
     while result["next"]:
