@@ -1,0 +1,15 @@
+name: Format code with black
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  format:
+    name: Format code
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    uses: Mews/.github/.github/workflows/format-python.yaml@main
