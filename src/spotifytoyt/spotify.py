@@ -5,7 +5,7 @@ import requests
 import spotipy
 from PIL import Image
 from spotipy.oauth2 import SpotifyClientCredentials
-from track import SpotifyTrack, get_track_from_spotify_data
+from track import SpotifyTrack
 
 
 def get_track_from_spotify_data(
