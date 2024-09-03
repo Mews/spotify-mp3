@@ -1,16 +1,14 @@
-from typing import List
-from PIL import Image
-import requests
 from io import BytesIO
+from typing import List
+
+import requests
+from PIL import Image
 
 
 class SpotifyTrack:
-    def __init__(self, 
-                 name:str, 
-                 artists:List[str],
-                 length_ms:int,
-                 cover:Image) -> None:
-        
+    def __init__(
+        self, name: str, artists: List[str], length_ms: int, cover: Image
+    ) -> None:
         self.name = name
         self.artists = artists
         self.length_ms = length_ms
@@ -18,12 +16,9 @@ class SpotifyTrack:
 
 
 class YoutubeTrack:
-    def __init__(self, 
-                 name:str, 
-                 artists:List[str],
-                 length_ms:int,
-                 cover:Image) -> None:
-        
+    def __init__(
+        self, name: str, artists: List[str], length_ms: int, cover: Image
+    ) -> None:
         self.name = name
         self.artists = artists
         self.length_ms = length_ms
@@ -39,14 +34,14 @@ def track_from_spotify_data(raw_track_data) -> SpotifyTrack:
     name = raw_track_data["name"]
 
     length_ms = raw_track_data["duration_ms"]
-    
+
     # Get all artist names
     artists = []
     artists_data = raw_track_data["artists"]
 
     for artist_data in artists_data:
         artists.append(artist_data["name"])
-    
+
     # Download song cover
     available_images = raw_track_data["album"]["images"]
 
@@ -56,11 +51,8 @@ def track_from_spotify_data(raw_track_data) -> SpotifyTrack:
         if image["height"] > max_height:
             max_height = image["height"]
             highest_quality_image = image
-            
+
     cover_data = requests.get(highest_quality_image["url"]).content
     cover = Image.open(BytesIO(cover_data))
 
-    return SpotifyTrack(name=name,
-                 artists=artists,
-                 length_ms=length_ms,
-                 cover=cover)
+    return SpotifyTrack(name=name, artists=artists, length_ms=length_ms, cover=cover)
