@@ -5,8 +5,9 @@ from typing import List
 import requests
 from PIL import Image
 from pytube import Playlist, YouTube
-from src.spotifymp3.track import YoutubeTrack
 from youtubesearchpython import VideosSearch
+
+from src.spotifymp3.track import YoutubeTrack
 
 
 def get_track_from_youtube_data(
