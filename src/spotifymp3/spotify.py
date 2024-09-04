@@ -5,7 +5,7 @@ import requests
 import spotipy
 from PIL import Image
 from spotipy.oauth2 import SpotifyClientCredentials
-from track import SpotifyTrack
+from src.spotifymp3.track import SpotifyTrack
 
 
 def get_track_from_spotify_data(
@@ -50,10 +50,10 @@ def create_spotify_client(client_id: str, client_secret: str) -> spotipy.Spotify
     return spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
 
-def get_track_from_url(client: spotipy.Spotify, url: str) -> SpotifyTrack:
+def get_track_from_url(client: spotipy.Spotify, url: str, download_cover:bool = True) -> SpotifyTrack:
     track_data = client.track(url)
 
-    return get_track_from_spotify_data(track_data)
+    return get_track_from_spotify_data(track_data, download_cover)
 
 
 def get_playlist_track_urls(client: spotipy.Spotify, playlist_url: str) -> List[str]:
@@ -77,12 +77,12 @@ def get_playlist_track_urls(client: spotipy.Spotify, playlist_url: str) -> List[
 
 
 def get_playlist_tracks(
-    client: spotipy.Spotify, playlist_url: str
+    client: spotipy.Spotify, playlist_url: str, download_cover:bool = True
 ) -> List[SpotifyTrack]:
     result = client.playlist_tracks(playlist_url)
 
     tracks = [
-        get_track_from_spotify_data(track_data["track"])
+        get_track_from_spotify_data(track_data["track"], download_cover)
         for track_data in result["items"]
     ]
 
@@ -90,7 +90,7 @@ def get_playlist_tracks(
         result = client.next(result)
         tracks.extend(
             [
-                get_track_from_spotify_data(track_data["track"])
+                get_track_from_spotify_data(track_data["track"], download_cover)
                 for track_data in result["items"]
             ]
         )
