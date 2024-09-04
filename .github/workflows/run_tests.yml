@@ -7,9 +7,12 @@ on:
     branches: [ "main" ]
 
 jobs:
-  call-run-python-tests:
-    - uses: actions/checkout@v4
 
+  checkout:
+    uses: actions/checkout@v4
+    name: Checkout
+
+  call-run-python-tests:
     name: Run tests
 
     permissions:
