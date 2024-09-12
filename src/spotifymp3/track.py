@@ -13,7 +13,7 @@ class SpotifyTrack:
     ) -> None:
         self.name = name
         self.artists = artists
-        self.length_ms = length_ms
+        self.length_ms = int(length_ms)
         self.cover = cover
 
 
@@ -28,6 +28,6 @@ class YoutubeTrack:
     ) -> None:
         self.name = name
         self.artist = artist
-        self.length_ms = length_ms
+        self.length_ms = int(length_ms)
         self.cover = cover
         self.link = link

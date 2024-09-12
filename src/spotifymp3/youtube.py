@@ -91,7 +91,7 @@ def get_track_from_url(url: str) -> YoutubeTrack:
 
 
 def get_tracks_from_youtube_search(
-    search_query: str, limit: int = 10
+    search_query: str, limit: int = 10, download_cover: bool = True
 ) -> List[YoutubeTrack]:
     search = VideosSearch(search_query, limit=limit)
 
@@ -100,7 +100,7 @@ def get_tracks_from_youtube_search(
     result = search.result()["result"]
 
     for video_data in result:
-        tracks.append(get_track_from_youtube_data(video_data))
+        tracks.append(get_track_from_youtube_data(video_data, download_cover))
 
     return tracks
 
