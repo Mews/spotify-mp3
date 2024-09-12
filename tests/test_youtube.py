@@ -24,10 +24,10 @@ def test_get_track_from_youtube_data():
 def test_get_tracks_from_youtube_search(mock_videos_search):
     mock_videos_search.return_value.result.return_value = load_data_from_file("youtube_search_result.txt")
 
-    tracks = get_tracks_from_youtube_search("search query", limit=10, download_cover=False)
+    tracks = get_tracks_from_youtube_search("search query", limit=5, download_cover=False)
 
     assert all(isinstance(track, YoutubeTrack) for track in tracks)
 
-    assert len(tracks) == 10
+    assert len(tracks) == 5
 
     assert all(track.cover is None for track in tracks)
