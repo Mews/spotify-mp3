@@ -1,13 +1,11 @@
-from tests.utils import load_data_from_file
-
 from unittest.mock import MagicMock
 
 from PIL import Image
-
 from spotipy import Spotify
 from spotipy.oauth2 import SpotifyClientCredentials
 
 from src.spotifymp3.spotify import *
+from tests.utils import load_data_from_file
 
 
 def test_create_spotify_client():
@@ -34,15 +32,17 @@ def test_get_track_from_spotify_data():
 
 def test_get_playlist_track_urls():
     """
-    playlist_tracks_1.txt and playlist_tracks_2.txt 
-    contain the paginated data returned from the playlist https://open.spotify.com/playlist/22EGM3OtabSMCSe9IVVEVZ?si=fb03f0e7a60147d4 
-    as of the 4th of september 2024, 
+    playlist_tracks_1.txt and playlist_tracks_2.txt
+    contain the paginated data returned from the playlist https://open.spotify.com/playlist/22EGM3OtabSMCSe9IVVEVZ?si=fb03f0e7a60147d4
+    as of the 4th of september 2024,
     using spotipy.Spotify.playlist_tracks
     """
 
     mock_client = MagicMock()
 
-    mock_client.playlist_tracks.return_value = load_data_from_file("playlist_tracks_1.txt")
+    mock_client.playlist_tracks.return_value = load_data_from_file(
+        "playlist_tracks_1.txt"
+    )
     mock_client.next.return_value = load_data_from_file("playlist_tracks_2.txt")
 
     track_urls = get_playlist_track_urls(mock_client, "playlist url")
@@ -59,21 +59,23 @@ def test_get_playlist_track_urls():
 
 def test_get_playlist_tracks():
     """
-    playlist_tracks_1.txt and playlist_tracks_2.txt 
-    contain the paginated data returned from the playlist https://open.spotify.com/playlist/22EGM3OtabSMCSe9IVVEVZ?si=fb03f0e7a60147d4 
-    as of the 4th of september 2024, 
+    playlist_tracks_1.txt and playlist_tracks_2.txt
+    contain the paginated data returned from the playlist https://open.spotify.com/playlist/22EGM3OtabSMCSe9IVVEVZ?si=fb03f0e7a60147d4
+    as of the 4th of september 2024,
     using spotipy.Spotify.playlist_tracks
     """
 
     mock_client = MagicMock()
 
-    mock_client.playlist_tracks.return_value = load_data_from_file("playlist_tracks_1.txt")
+    mock_client.playlist_tracks.return_value = load_data_from_file(
+        "playlist_tracks_1.txt"
+    )
     mock_client.next.return_value = load_data_from_file("playlist_tracks_2.txt")
 
     tracks = get_playlist_tracks(mock_client, "playlist url", download_cover=False)
-    
+
     assert len(tracks) == 126
-    
+
     track1 = tracks[0]
     track70 = tracks[69]
     track95 = tracks[94]
