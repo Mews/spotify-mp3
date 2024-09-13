@@ -4,11 +4,10 @@ from typing import List, Tuple
 
 import cv2
 import numpy as np
-import spotipy
 from PIL import Image
 from skimage.metrics import structural_similarity as ssim
 
-from src.spotifymp3 import spotify, youtube
+from src.spotifymp3 import youtube
 from src.spotifymp3.track import SpotifyTrack, YoutubeTrack
 
 
@@ -36,17 +35,10 @@ def match_tracks(spotify_track: SpotifyTrack, yt_track: YoutubeTrack):
 
 
 def match_lengths(length1: int, lenght2: int):
-    if length1 == lenght2:
-        return 1
+    disintegration = 0.00001
+    diff = abs(length1 - lenght2)
 
-    if abs(length1 - lenght2) > 180_000:
-        return 0
-
-    try:
-        return 1 / (math.log10((abs(length1 - lenght2)) / 100))
-
-    except:
-        return 1
+    return math.exp(-disintegration * diff)
 
 
 def match_covers(cover1: Image.Image, cover2: Image.Image):
@@ -62,7 +54,7 @@ def match_covers(cover1: Image.Image, cover2: Image.Image):
 
 
 def convert_spotify_track_to_youtube(
-    client: spotipy.Spotify, spotify_track: SpotifyTrack
+    spotify_track: SpotifyTrack
 ) -> List[Tuple[float, str]]:
     potential_tracks = youtube.get_tracks_from_youtube_search(
         spotify_track.name + spotify_track.artists[0]
