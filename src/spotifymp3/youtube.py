@@ -8,6 +8,7 @@ from pytube import Playlist, YouTube
 from youtubesearchpython import VideosSearch
 
 from src.spotifymp3.track import YoutubeTrack
+from src.spotifymp3.playlist import YoutubePlaylist
 
 
 def get_track_from_youtube_data(
@@ -121,3 +122,21 @@ def get_playlist_tracks(playlist_url: str) -> List[YoutubeTrack]:
         tracks.append(get_track_from_youtube_object(video))
 
     return tracks
+
+
+def get_playlist_from_url(playlist_url: str) -> YoutubePlaylist:
+    playlist = Playlist(playlist_url)
+
+    name = playlist.title
+
+    author = playlist.owner
+
+    song_count = playlist.length
+
+    link = playlist_url
+
+    cover_url = playlist.videos[0].thumbnail_url
+    cover_data = requests.get(cover_url).content
+    cover = Image.open(BytesIO(cover_data))
+    
+    return YoutubePlaylist(name=name, cover=cover, author=author, song_count=song_count, link=link)
