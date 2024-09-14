@@ -4,8 +4,8 @@ from PIL import Image
 from spotipy import Spotify
 from spotipy.oauth2 import SpotifyClientCredentials
 
-from src.spotifymp3.spotify import *
 from src.spotifymp3.playlist import SpotifyPlaylist
+from src.spotifymp3.spotify import *
 from tests.utils import load_data_from_file, mock_image_bytes
 
 
@@ -16,7 +16,8 @@ def test_create_spotify_client():
     assert isinstance(client, Spotify)
     assert isinstance(client.auth_manager, SpotifyClientCredentials)
 
-@patch('requests.get')
+
+@patch("requests.get")
 def test_get_track_from_spotify_data(mock_requests_get):
     mock_requests_get.return_value.content = mock_image_bytes()
 
@@ -104,7 +105,8 @@ def test_get_playlist_tracks():
     assert track126.length_ms == 147031
     assert track126.cover is None
 
-@patch('requests.get')
+
+@patch("requests.get")
 def test_get_playlist_track_urls(mock_requests_get):
     """
     spotify_playlist.txt
@@ -115,9 +117,7 @@ def test_get_playlist_track_urls(mock_requests_get):
 
     mock_client = MagicMock()
 
-    mock_client.playlist.return_value = load_data_from_file(
-        "spotify_playlist.txt"
-    )
+    mock_client.playlist.return_value = load_data_from_file("spotify_playlist.txt")
 
     mock_requests_get.return_value.content = mock_image_bytes()
 
