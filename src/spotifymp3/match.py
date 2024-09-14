@@ -54,10 +54,12 @@ def match_covers(cover1: Image.Image, cover2: Image.Image):
 
 
 def convert_spotify_track_to_youtube(
-    spotify_track: SpotifyTrack, search_count:int = 10, download_cover:bool = True
+    spotify_track: SpotifyTrack, search_count: int = 10, download_cover: bool = True
 ) -> List[Tuple[float, str]]:
     potential_tracks = youtube.get_tracks_from_youtube_search(
-        spotify_track.name + spotify_track.artists[0], limit=search_count, download_cover=download_cover
+        spotify_track.name + spotify_track.artists[0],
+        limit=search_count,
+        download_cover=download_cover,
     )
 
     match_results = []
