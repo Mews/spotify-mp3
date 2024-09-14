@@ -19,4 +19,3 @@ jobs:
       python_versions: '["3.12"]'
       os_list: '["ubuntu-latest", "windows-latest", "macos-latest"]'
       create_coverage_comment: false
-      extra_pytest_arguments: "-v"
