@@ -7,6 +7,7 @@ from PIL import Image
 from spotipy.oauth2 import SpotifyClientCredentials
 
 from src.spotifymp3.track import SpotifyTrack
+from src.spotifymp3.playlist import SpotifyPlaylist
 
 
 def get_track_from_spotify_data(
@@ -99,3 +100,31 @@ def get_playlist_tracks(
         )
 
     return tracks
+
+def get_playlist_from_url(
+    client: spotipy.Spotify, playlist_url: str
+) -> SpotifyPlaylist:
+    result = client.playlist(playlist_url)
+
+    name = result["name"]
+
+    link = playlist_url
+
+    song_count = result["tracks"]["total"]
+
+    author = result["owner"]["display_name"]
+
+    # Download cover
+    available_images = result["images"]
+
+    max_height = -1
+
+    for image in available_images:
+        if image["height"] > max_height:
+            max_height = image["height"]
+            highest_quality_image = image
+
+    cover_data = requests.get(highest_quality_image["url"]).content
+    cover = Image.open(BytesIO(cover_data))
+
+    return SpotifyPlaylist(name=name, cover=cover, author=author, song_count=song_count, link=link)

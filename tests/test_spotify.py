@@ -1,11 +1,12 @@
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 
 from PIL import Image
 from spotipy import Spotify
 from spotipy.oauth2 import SpotifyClientCredentials
 
 from src.spotifymp3.spotify import *
-from tests.utils import load_data_from_file
+from src.spotifymp3.playlist import SpotifyPlaylist
+from tests.utils import load_data_from_file, mock_image_bytes
 
 
 def test_create_spotify_client():
@@ -15,8 +16,10 @@ def test_create_spotify_client():
     assert isinstance(client, Spotify)
     assert isinstance(client.auth_manager, SpotifyClientCredentials)
 
+@patch('requests.get')
+def test_get_track_from_spotify_data(mock_requests_get):
+    mock_requests_get.return_value.content = mock_image_bytes()
 
-def test_get_track_from_spotify_data():
     track_data = load_data_from_file("spotify_track.txt")
 
     track = get_track_from_spotify_data(track_data)
@@ -100,3 +103,29 @@ def test_get_playlist_tracks():
     assert track126.artists == ["Good Kid"]
     assert track126.length_ms == 147031
     assert track126.cover is None
+
+@patch('requests.get')
+def test_get_playlist_track_urls(mock_requests_get):
+    """
+    spotify_playlist.txt
+    contains the data returned from the playlist https://open.spotify.com/playlist/22EGM3OtabSMCSe9IVVEVZ?si=fb03f0e7a60147d4
+    as of the 14th of september 2024,
+    using spotipy.Spotify.playlist
+    """
+
+    mock_client = MagicMock()
+
+    mock_client.playlist.return_value = load_data_from_file(
+        "spotify_playlist.txt"
+    )
+
+    mock_requests_get.return_value.content = mock_image_bytes()
+
+    playlist = get_playlist_from_url(mock_client, "playlist url")
+
+    assert isinstance(playlist, SpotifyPlaylist)
+    assert playlist.name == "test"
+    assert isinstance(playlist.cover, Image.Image)
+    assert playlist.song_count == 126
+    assert playlist.author == "Mews"
+    assert playlist.link == "playlist url"
