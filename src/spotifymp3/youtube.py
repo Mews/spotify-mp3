@@ -7,8 +7,8 @@ from PIL import Image
 from pytube import Playlist, YouTube
 from youtubesearchpython import VideosSearch
 
-from src.spotifymp3.track import YoutubeTrack
 from src.spotifymp3.playlist import YoutubePlaylist
+from src.spotifymp3.track import YoutubeTrack
 
 
 def get_track_from_youtube_data(
@@ -138,5 +138,7 @@ def get_playlist_from_url(playlist_url: str) -> YoutubePlaylist:
     cover_url = playlist.videos[0].thumbnail_url
     cover_data = requests.get(cover_url).content
     cover = Image.open(BytesIO(cover_data))
-    
-    return YoutubePlaylist(name=name, cover=cover, author=author, song_count=song_count, link=link)
+
+    return YoutubePlaylist(
+        name=name, cover=cover, author=author, song_count=song_count, link=link
+    )
