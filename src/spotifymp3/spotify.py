@@ -28,11 +28,17 @@ def get_track_from_spotify_data(
     if download_cover:
         available_images = raw_track_data["album"]["images"]
 
-        max_height = -1
+        max_thumbnail_quality = -1
 
         for image in available_images:
-            if image["height"] > max_height:
-                max_height = image["height"]
+            if not image["height"] or not image["width"]:
+                highest_quality_image = image
+                break
+            
+            pixel_count = image["height"] * image["width"]
+
+            if pixel_count > max_thumbnail_quality:
+                max_thumbnail_quality = pixel_count
                 highest_quality_image = image
 
         cover_data = requests.get(highest_quality_image["url"]).content
@@ -118,11 +124,17 @@ def get_playlist_from_url(
     # Download cover
     available_images = result["images"]
 
-    max_height = -1
+    max_thumbnail_quality = -1
 
     for image in available_images:
-        if image["height"] > max_height:
-            max_height = image["height"]
+        if not image["height"] or not image["width"]:
+            highest_quality_image = image
+            break
+            
+        pixel_count = image["height"] * image["width"]
+
+        if pixel_count > max_thumbnail_quality:
+            max_thumbnail_quality = pixel_count
             highest_quality_image = image
 
     cover_data = requests.get(highest_quality_image["url"]).content
