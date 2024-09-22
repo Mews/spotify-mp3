@@ -73,8 +73,11 @@ def get_track_from_youtube_object(
     artist = youtube_object.author
     length_ms = youtube_object.length * 1000
 
-    cover_data = requests.get(youtube_object.thumbnail_url).content
-    cover = Image.open(BytesIO(cover_data))
+    if download_cover:
+        cover_data = requests.get(youtube_object.thumbnail_url).content
+        cover = Image.open(BytesIO(cover_data))
+    else:
+        cover = None
 
     return YoutubeTrack(
         name=name,
@@ -113,13 +116,13 @@ def get_playlist_track_urls(playlist_url: str) -> List[str]:
     return list(playlist.video_urls)
 
 
-def get_playlist_tracks(playlist_url: str) -> List[YoutubeTrack]:
+def get_playlist_tracks(playlist_url: str, download_covers:bool = True) -> List[YoutubeTrack]:
     playlist = Playlist(playlist_url)
 
     tracks = []
 
     for video in playlist.videos:
-        tracks.append(get_track_from_youtube_object(video))
+        tracks.append(get_track_from_youtube_object(video, download_cover=download_covers))
 
     return tracks
 
