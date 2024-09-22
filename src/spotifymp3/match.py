@@ -38,7 +38,7 @@ def match_lengths(length1: int, lenght2: int):
     disintegration = 0.00001
     diff = abs(length1 - lenght2)
 
-    return math.exp(-disintegration * diff)
+    return math.exp(-disintegration * diff) * 1.75
 
 
 def match_covers(cover1: Image.Image, cover2: Image.Image):
