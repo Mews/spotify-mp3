@@ -34,7 +34,7 @@ def get_track_from_spotify_data(
             if not image["height"] or not image["width"]:
                 highest_quality_image = image
                 break
-            
+
             pixel_count = image["height"] * image["width"]
 
             if pixel_count > max_thumbnail_quality:
@@ -130,7 +130,7 @@ def get_playlist_from_url(
         if not image["height"] or not image["width"]:
             highest_quality_image = image
             break
-            
+
         pixel_count = image["height"] * image["width"]
 
         if pixel_count > max_thumbnail_quality:
