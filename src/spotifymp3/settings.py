@@ -1,5 +1,6 @@
 from configparser import ConfigParser
 
+
 def reset_default_configs():
     config = ConfigParser()
 
@@ -9,6 +10,7 @@ def reset_default_configs():
 
     with open("settings.ini", "w", encoding="utf-8") as f:
         config.write(f)
+
 
 config = ConfigParser()
 config.read("settings.ini", encoding="utf-8")
