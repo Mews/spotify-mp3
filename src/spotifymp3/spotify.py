@@ -87,12 +87,12 @@ def get_playlist_track_urls(client: spotipy.Spotify, playlist_url: str) -> List[
 
 
 def get_playlist_tracks(
-    client: spotipy.Spotify, playlist_url: str, download_cover: bool = True
+    client: spotipy.Spotify, playlist_url: str, download_covers: bool = True
 ) -> List[SpotifyTrack]:
     result = client.playlist_tracks(playlist_url)
 
     tracks = [
-        get_track_from_spotify_data(track_data["track"], download_cover)
+        get_track_from_spotify_data(track_data["track"], download_covers)
         for track_data in result["items"]
     ]
 
@@ -100,7 +100,7 @@ def get_playlist_tracks(
         result = client.next(result)
         tracks.extend(
             [
-                get_track_from_spotify_data(track_data["track"], download_cover)
+                get_track_from_spotify_data(track_data["track"], download_covers)
                 for track_data in result["items"]
             ]
         )
