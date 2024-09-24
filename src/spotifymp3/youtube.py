@@ -89,7 +89,7 @@ def get_track_from_youtube_object(
     )
 
 
-def get_track_from_url(url: str, download_cover:bool = True) -> YoutubeTrack:
+def get_track_from_url(url: str, download_cover: bool = True) -> YoutubeTrack:
     yt = YouTube(url)
 
     return get_track_from_youtube_object(yt, download_cover=download_cover)
