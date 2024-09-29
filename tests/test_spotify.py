@@ -76,7 +76,7 @@ def test_get_playlist_tracks():
     )
     mock_client.next.return_value = load_data_from_file("playlist_tracks_2.txt")
 
-    tracks = get_playlist_tracks(mock_client, "playlist url", download_cover=False)
+    tracks = get_playlist_tracks(mock_client, "playlist url", download_covers=False)
 
     assert len(tracks) == 126
 
