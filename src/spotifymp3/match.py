@@ -31,6 +31,8 @@ def match_tracks(spotify_track: SpotifyTrack, yt_track: YoutubeTrack):
         score += match_covers(spotify_track.cover, yt_track.cover)
         # print("Cover:", match_covers(spotify_track.cover, yt_track.cover))
 
+    score += score_views(view_count=yt_track.view_count)
+
     return score
 
 
@@ -52,6 +54,11 @@ def match_covers(cover1: Image.Image, cover2: Image.Image):
 
     return float(score)
 
+
+def score_views(view_count:int):
+    k = 0.0000005
+    return 1 - math.exp(-k * view_count)
+    
 
 def convert_spotify_track_to_youtube(
     spotify_track: SpotifyTrack, search_count: int = 10, download_cover: bool = True

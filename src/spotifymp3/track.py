@@ -25,9 +25,11 @@ class YoutubeTrack:
         length_ms: int,
         cover: Optional[Image.Image],
         link: str,
+        view_count:int,
     ) -> None:
         self.name = name
         self.artist = artist
         self.length_ms = int(length_ms)
         self.cover = cover
         self.link = link
+        self.view_count = view_count
