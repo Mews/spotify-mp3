@@ -12,7 +12,7 @@ from src.spotifymp3.track import SpotifyTrack, YoutubeTrack
 
 
 def match_tracks(spotify_track: SpotifyTrack, yt_track: YoutubeTrack):
-    #print("MATCHING", yt_track.link)
+    # print("MATCHING", yt_track.link)
     score = 0
 
     # Artist score
@@ -20,7 +20,7 @@ def match_tracks(spotify_track: SpotifyTrack, yt_track: YoutubeTrack):
         spotify_artists=spotify_track.artists, youtube_artist=yt_track.artist
     )
     score += artist_score
-    #print("Artist:", artist_score)
+    # print("Artist:", artist_score)
 
     # for artist in spotify_track.artists:
     # score += difflib.SequenceMatcher(
@@ -32,12 +32,12 @@ def match_tracks(spotify_track: SpotifyTrack, yt_track: YoutubeTrack):
         spotify_title=spotify_track.name, youtube_title=yt_track.name
     )
     score += title_score
-    #print("Title:", title_score)
+    # print("Title:", title_score)
 
     # Length score
     length_score = match_lengths(spotify_track.length_ms, yt_track.length_ms)
     score += length_score
-    #print("Length:", length_score)
+    # print("Length:", length_score)
 
     # Cover score
     if not spotify_track.cover is None and not yt_track.cover is None:
@@ -46,7 +46,7 @@ def match_tracks(spotify_track: SpotifyTrack, yt_track: YoutubeTrack):
         cover_score = 0
 
     score += cover_score
-    #print("Cover:", cover_score)
+    # print("Cover:", cover_score)
 
     # View score
     # views_score = score_views(view_count=yt_track.view_count)
@@ -56,9 +56,9 @@ def match_tracks(spotify_track: SpotifyTrack, yt_track: YoutubeTrack):
     # Keywords score
     keywords_score = score_keywords(track_title=yt_track.name)
     score += keywords_score
-    #print("Keywords:", keywords_score)
+    # print("Keywords:", keywords_score)
 
-    #print("Total:", score)
+    # print("Total:", score)
 
     return score
 
