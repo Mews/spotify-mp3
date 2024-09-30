@@ -495,7 +495,6 @@ class DownloadOptionsPicker(tk.Toplevel):
             self, text="Download queue", command=self.download_queue
         )
         download_button.pack(pady=(10, 0))
-        
 
     def open_folder_picker(self):
         folder_path = filedialog.askdirectory()
