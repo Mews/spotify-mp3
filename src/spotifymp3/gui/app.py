@@ -67,7 +67,7 @@ class App(tk.Tk):
         self.after(100, self.queue_viewer.update_sheet_data)
 
         if convert_track.spotify_track:
-            output_path = f"{download_options.output_folder}/{convert_track.spotify_track.name} {convert_track.spotify_track.artists[0].replace(".","#")}"
+            output_path = f"{download_options.output_folder}/{convert_track.spotify_track.name} {convert_track.spotify_track.artists[0].replace('.','#')}"
 
         else:
             output_path = f"{download_options.output_folder}/%(title)s"
