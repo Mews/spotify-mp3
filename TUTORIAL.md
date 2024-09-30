@@ -1,4 +1,4 @@
-To use the spotify-mp3 app, you will need to provide a client id to connect to the spotify api
+To use the spotify-mp3 app, you will need to provide a client id and a client secret to connect to the spotify api
 ---
 
 To get yours, first naviagate to the [spotify developer portal](https://developer.spotify.com/) and log in at the top right corner.
@@ -8,8 +8,6 @@ Then, go the [dashboard](https://developer.spotify.com/dashboard) and create an 
 ![Create app](https://i.ibb.co/wN1yW31/image.png)
 
 Give it any name and description you want, and leave the "website" section empty.
-
-Then, in the "Redirect URI" section, enter `http://localhost:8888/callback`.
 
 In the "Which API/SDKs are you planning to use?" section, select "Web API".
 
