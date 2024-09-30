@@ -1,5 +1,13 @@
+mutagen==1.47.0
+numpy==2.1.1
+opencv_python==4.10.0.84
 Pillow==10.4.0
 pytube==15.0.0
 Requests==2.32.3
+skimage==0.0
 spotipy==2.24.0
+syncedlyrics==1.0.1
+tkfontawesome==0.2.0
+tksheet==7.2.15
 youtube_search_python==1.6.6
+yt_dlp==2024.9.27
