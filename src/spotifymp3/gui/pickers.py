@@ -457,6 +457,7 @@ class DownloadOptionsPicker(tk.Toplevel):
         self.youtube_limit_var = tk.IntVar(value=10)
         self.match_cover_var = tk.BooleanVar(value=True)
         self.add_metadata_var = tk.BooleanVar(value=True)
+        self.embed_lyrics_var = tk.BooleanVar(value=True)
 
         tk.Label(self, text="Pick output folder:").pack(pady=(10, 0))
         output_folder_entry = tk.Entry(
@@ -485,10 +486,16 @@ class DownloadOptionsPicker(tk.Toplevel):
         )
         add_metadata_checkbox.pack(pady=(5, 10))
 
+        embed_lyrics_checkbox = tk.Checkbutton(
+            self, text="Embed lyrics?", variable=self.embed_lyrics_var
+        )
+        embed_lyrics_checkbox.pack(pady=(5, 10))
+
         download_button = tk.Button(
             self, text="Download queue", command=self.download_queue
         )
         download_button.pack(pady=(10, 0))
+        
 
     def open_folder_picker(self):
         folder_path = filedialog.askdirectory()
@@ -515,6 +522,7 @@ class DownloadOptionsPicker(tk.Toplevel):
             download_options.youtube_search_limit = self.youtube_limit_var.get()
             download_options.download_covers = self.match_cover_var.get()
             download_options.save_metadata = self.add_metadata_var.get()
+            download_options.embed_lyrics = self.embed_lyrics_var.get()
 
             self.handler(download_options)
 

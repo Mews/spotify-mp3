@@ -62,3 +62,4 @@ class DownloadOptions:
         self.youtube_search_limit = 10
         self.download_covers = True
         self.save_metadata = True
+        self.embed_lyrics = True

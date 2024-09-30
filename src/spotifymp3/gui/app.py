@@ -4,10 +4,11 @@ from concurrent.futures import ThreadPoolExecutor
 from io import BytesIO
 from typing import List
 
-from mutagen.id3 import APIC, ID3, TALB, TIT2, TOAL, TPE1, ID3NoHeaderError
+from mutagen.id3 import APIC, ID3, TALB, TIT2, TOAL, TPE1, USLT, ID3NoHeaderError
 from mutagen.mp3 import MP3
 from tksheet.sheet import Sheet
 from yt_dlp import YoutubeDL
+import syncedlyrics
 
 from src.spotifymp3.gui.topbar import TopBar
 from src.spotifymp3.gui.utils import (DownloadOptions, ObservableList,
@@ -144,6 +145,12 @@ class App(tk.Tk):
                             data=img_byte_array.read(),
                         )
                     )
+
+            # Embed lyrics
+            if download_options.embed_lyrics:
+                lyrics = syncedlyrics.search(convert_track.spotify_track.name + " " + convert_track.spotify_track.artists[0], plain_only=True)
+                if lyrics:
+                    audio["USLT"] = USLT(encoding=3, lang="eng", desc='', text=lyrics)
 
             audio.save(v2_version=3)
 
