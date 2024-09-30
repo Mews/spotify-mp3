@@ -56,6 +56,10 @@ class ObservableList(list):
         return x
 
 
+def replace_alnum(string:str, replacement:str="#") -> str:
+    return ''.join(char if char.isalnum() or char == " " else replacement for char in string)
+
+
 class DownloadOptions:
     def __init__(self):
         self.output_folder = None

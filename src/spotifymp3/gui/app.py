@@ -12,7 +12,7 @@ import syncedlyrics
 
 from src.spotifymp3.gui.topbar import TopBar
 from src.spotifymp3.gui.utils import (DownloadOptions, ObservableList,
-                                      get_root_tk)
+                                      get_root_tk, replace_alnum)
 from src.spotifymp3.match import convert_spotify_track_to_youtube
 from src.spotifymp3.settings import get_config
 from src.spotifymp3.spotify import create_spotify_client
@@ -80,7 +80,7 @@ class App(tk.Tk):
         self.after(100, self.queue_viewer.update_sheet_data)
 
         if convert_track.spotify_track:
-            output_path = f"{download_options.output_folder}/{convert_track.spotify_track.name} {convert_track.spotify_track.artists[0].replace('.','#')}"
+            output_path = f"{download_options.output_folder}/{replace_alnum(convert_track.spotify_track.name)} {replace_alnum(convert_track.spotify_track.artists[0])}"
 
         else:
             output_path = f"{download_options.output_folder}/%(title)s"
