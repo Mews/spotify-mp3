@@ -16,9 +16,11 @@ def match_tracks(spotify_track: SpotifyTrack, yt_track: YoutubeTrack):
     score = 0
 
     # Artist score
-    artist_score = match_artists(spotify_artists=spotify_track.artists, youtube_artist=yt_track.artist)
+    artist_score = match_artists(
+        spotify_artists=spotify_track.artists, youtube_artist=yt_track.artist
+    )
     score += artist_score
-    print("Artist:",artist_score)
+    print("Artist:", artist_score)
 
     # for artist in spotify_track.artists:
     # score += difflib.SequenceMatcher(
@@ -26,14 +28,16 @@ def match_tracks(spotify_track: SpotifyTrack, yt_track: YoutubeTrack):
     # ).ratio()
 
     # Title score
-    title_score = match_titles(spotify_title=spotify_track.name, youtube_title=yt_track.name)
+    title_score = match_titles(
+        spotify_title=spotify_track.name, youtube_title=yt_track.name
+    )
     score += title_score
-    print("Title:",title_score)
+    print("Title:", title_score)
 
     # Length score
     length_score = match_lengths(spotify_track.length_ms, yt_track.length_ms)
     score += length_score
-    print("Length:",length_score)
+    print("Length:", length_score)
 
     # Cover score
     if not spotify_track.cover is None and not yt_track.cover is None:
@@ -42,7 +46,7 @@ def match_tracks(spotify_track: SpotifyTrack, yt_track: YoutubeTrack):
         cover_score = 0
 
     score += cover_score
-    print("Cover:",cover_score)
+    print("Cover:", cover_score)
 
     # View score
     # views_score = score_views(view_count=yt_track.view_count)
@@ -52,10 +56,10 @@ def match_tracks(spotify_track: SpotifyTrack, yt_track: YoutubeTrack):
     # Keywords score
     keywords_score = score_keywords(track_title=yt_track.name)
     score += keywords_score
-    print("Keywords:",keywords_score)
+    print("Keywords:", keywords_score)
 
     print("Total:", score)
-    
+
     return score
 
 
@@ -73,13 +77,11 @@ def match_artists(spotify_artists: List[str], youtube_artist: str):
 
 
 def match_titles(spotify_title: str, youtube_title: str):
-    title_score = difflib.SequenceMatcher(
-        None, spotify_title, youtube_title
-    ).ratio()
+    title_score = difflib.SequenceMatcher(None, spotify_title, youtube_title).ratio()
 
     if not any(spotify_word in youtube_title for spotify_word in spotify_title.split()):
         title_score *= 0.33
-    
+
     return title_score
 
 
