@@ -63,11 +63,17 @@ def get_track_from_youtube_data(
 
     # Parse view count
     view_count_text = raw_track_data["viewCount"]["text"]
-    view_count = int(view_count_text.replace('views', '').replace(',', '').strip())
+    view_count = int(view_count_text.replace("views", "").replace(",", "").strip())
 
     return YoutubeTrack(
-        name=name, artist=artist, length_ms=length_ms, cover=cover, link=link, view_count=view_count
+        name=name,
+        artist=artist,
+        length_ms=length_ms,
+        cover=cover,
+        link=link,
+        view_count=view_count,
     )
+
 
 def get_track_from_youtube_object(
     youtube_object: YouTube, download_cover: bool = True
@@ -91,7 +97,7 @@ def get_track_from_youtube_object(
         cover=cover,
         link="https://www.youtube.com/watch?v="
         + youtube_object.vid_info["videoDetails"]["videoId"],
-        view_count=view_count
+        view_count=view_count,
     )
 
 

@@ -10,7 +10,7 @@ class SpotifyTrack:
         artists: List[str],
         length_ms: int,
         cover: Optional[Image.Image],
-        album: str
+        album: str,
     ) -> None:
         self.name = name
         self.artists = artists
@@ -27,7 +27,7 @@ class YoutubeTrack:
         length_ms: int,
         cover: Optional[Image.Image],
         link: str,
-        view_count:int,
+        view_count: int,
     ) -> None:
         self.name = name
         self.artist = artist
@@ -45,13 +45,13 @@ class ConvertTrack:
         3: "Converted!",
         4: "Downloading...",
         5: "Writing metadata...",
-        6: "Finished!"
+        6: "Finished!",
     }
 
     def __init__(self) -> None:
-        self.status:int = 0
-        self.spotify_track:SpotifyTrack = None
-        self.youtube_track:YoutubeTrack = None
-    
+        self.status: int = 0
+        self.spotify_track: SpotifyTrack = None
+        self.youtube_track: YoutubeTrack = None
+
     def status_message(self) -> str:
         return self.STATUS_CODES[self.status]

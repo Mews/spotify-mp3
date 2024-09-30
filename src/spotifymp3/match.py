@@ -16,16 +16,25 @@ def match_tracks(spotify_track: SpotifyTrack, yt_track: YoutubeTrack):
     score = 0
 
     # Artist score
-    artist_score = max([difflib.SequenceMatcher(None, artist.lower(), yt_track.artist.lower()).ratio() for artist in spotify_track.artists])
+    artist_score = max(
+        [
+            difflib.SequenceMatcher(
+                None, artist.lower(), yt_track.artist.lower()
+            ).ratio()
+            for artist in spotify_track.artists
+        ]
+    )
     score += artist_score
 
-    #for artist in spotify_track.artists:
-        #score += difflib.SequenceMatcher(
-        #    None, artist.lower(), yt_track.artist.lower()
-        #).ratio()
-    
+    # for artist in spotify_track.artists:
+    # score += difflib.SequenceMatcher(
+    #    None, artist.lower(), yt_track.artist.lower()
+    # ).ratio()
+
     # Title score
-    title_score = difflib.SequenceMatcher(None, spotify_track.name, yt_track.name).ratio()
+    title_score = difflib.SequenceMatcher(
+        None, spotify_track.name, yt_track.name
+    ).ratio()
     score += title_score
 
     # Length score
@@ -37,17 +46,16 @@ def match_tracks(spotify_track: SpotifyTrack, yt_track: YoutubeTrack):
         cover_score = match_covers(spotify_track.cover, yt_track.cover)
     else:
         cover_score = 0
-    
+
     score += cover_score
 
     # View score
-    #views_score = score_views(view_count=yt_track.view_count)
-    #score += views_score
+    # views_score = score_views(view_count=yt_track.view_count)
+    # score += views_score
 
     # Keywords score
     keywords_score = score_keywords(track_title=yt_track.name)
     score += keywords_score
-
 
     return score
 
@@ -71,13 +79,13 @@ def match_covers(cover1: Image.Image, cover2: Image.Image):
     return float(score)
 
 
-def score_views(view_count:int):
+def score_views(view_count: int):
     k = 0.0000005
     m = 1
-    return (1 - math.exp(-k * view_count))*m
+    return (1 - math.exp(-k * view_count)) * m
 
 
-def score_keywords(track_title:str):
+def score_keywords(track_title: str):
     whitelist = ["official", "audio"]
     blacklist = ["video", "music video"]
 
@@ -86,9 +94,8 @@ def score_keywords(track_title:str):
 
     wl_matches = sum([wl_word in track_title.lower() for wl_word in whitelist])
 
-    return (2 ** wl_matches - 1) / (2 ** len(whitelist) - 1)
+    return (2**wl_matches - 1) / (2 ** len(whitelist) - 1)
 
-    
 
 def convert_spotify_track_to_youtube(
     spotify_track: SpotifyTrack, search_count: int = 10, download_cover: bool = True
