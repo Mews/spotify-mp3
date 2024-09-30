@@ -46,8 +46,13 @@ def get_track_from_spotify_data(
 
     else:
         cover = None
+    
+    if raw_track_data["album"]["name"]:
+        album = raw_track_data["album"]["name"]
+    else:
+        album = name
 
-    return SpotifyTrack(name=name, artists=artists, length_ms=length_ms, cover=cover)
+    return SpotifyTrack(name=name, artists=artists, length_ms=length_ms, cover=cover, album=album)
 
 
 def create_spotify_client(client_id: str, client_secret: str) -> spotipy.Spotify:

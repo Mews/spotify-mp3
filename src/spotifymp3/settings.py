@@ -12,8 +12,18 @@ def reset_default_configs():
         config.write(f)
 
 
-config = ConfigParser()
-config.read("settings.ini", encoding="utf-8")
+def change_config(section, option, new_value):
+    config = ConfigParser()
+    config.read("settings.ini", encoding="utf-8")
 
-CLIENT_ID = config.get("spotify", "client_id")
-CLIENT_SECRET = config.get("spotify", "client_secret")
+    config.set(section, option, new_value)
+
+    with open("settings.ini", "w", encoding="utf-8") as f:
+        config.write(f)
+
+
+def get_config(section, option):
+    config = ConfigParser()
+    config.read("settings.ini", encoding="utf-8")
+
+    return config.get(section, option)
