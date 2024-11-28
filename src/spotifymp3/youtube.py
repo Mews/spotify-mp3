@@ -63,7 +63,10 @@ def get_track_from_youtube_data(
 
     # Parse view count
     view_count_text = raw_track_data["viewCount"]["text"]
-    view_count = int(view_count_text.replace("views", "").replace(",", "").strip())
+    try:
+        view_count = int(view_count_text.replace("views", "").replace(",", "").strip())
+    except (ValueError, AttributeError):
+        view_count = 0
 
     return YoutubeTrack(
         name=name,
