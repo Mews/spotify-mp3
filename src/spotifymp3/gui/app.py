@@ -157,7 +157,9 @@ class App(tk.Tk):
                         plain_only=True,
                     )
                     if lyrics:
-                        audio["USLT"] = USLT(encoding=3, lang="eng", desc="", text=lyrics)
+                        audio["USLT"] = USLT(
+                            encoding=3, lang="eng", desc="", text=lyrics
+                        )
 
                 audio.save(v2_version=3)
 
@@ -167,7 +169,7 @@ class App(tk.Tk):
             if retries <= 0:
                 raise exc
             else:
-                self.process_convert_track(convert_track, download_options, retries-1)
+                self.process_convert_track(convert_track, download_options, retries - 1)
 
     def start_processing_queue(self, donwload_options: DownloadOptions):
         self.top_bar.disable_topbar()
