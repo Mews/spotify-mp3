@@ -52,116 +52,122 @@ class App(tk.Tk):
         download_options: DownloadOptions,
         retries: int = 3,
     ):
-        # Convert spotify track to youtube track
-        if convert_track.youtube_track:
-            download_url = convert_track.youtube_track.link
+        try:
+            # Convert spotify track to youtube track
+            if convert_track.youtube_track:
+                download_url = convert_track.youtube_track.link
 
-            convert_track.status = 3
-            self.after(100, self.queue_viewer.update_sheet_data)
+                convert_track.status = 3
+                self.after(100, self.queue_viewer.update_sheet_data)
 
-        elif convert_track.spotify_track and not convert_track.youtube_track:
-            convert_track.status = 2
-            self.after(100, self.queue_viewer.update_sheet_data)
+            elif convert_track.spotify_track and not convert_track.youtube_track:
+                convert_track.status = 2
+                self.after(100, self.queue_viewer.update_sheet_data)
 
-            match_results = convert_spotify_track_to_youtube(
-                convert_track.spotify_track,
-                search_count=download_options.youtube_search_limit,
-                download_cover=download_options.download_covers,
-            )
-
-            best_match_url = match_results[0][1]
-
-            download_url = best_match_url
-
-            convert_track.status = 3
-            self.after(100, self.queue_viewer.update_sheet_data)
-
-        # Download track
-        convert_track.status = 4
-        self.after(100, self.queue_viewer.update_sheet_data)
-
-        if convert_track.spotify_track:
-            output_path = f"{download_options.output_folder}/{replace_alnum(convert_track.spotify_track.name)} {replace_alnum(convert_track.spotify_track.artists[0])}"
-
-        else:
-            output_path = f"{download_options.output_folder}/%(title)s"
-
-        ydl_opts = {
-            "format": "bestaudio",
-            "extractaudio": True,
-            # "audioformat": "mp3",
-            "outtmpl": output_path,
-            "postprocessors": [
-                {
-                    "key": "FFmpegExtractAudio",
-                    "preferredcodec": "mp3",
-                    "preferredquality": "192",
-                }
-            ],
-            "quiet": True,
-            "no_warnings": True,
-        }
-
-        with YoutubeDL(ydl_opts) as ydl:
-            ydl.download([download_url])
-
-        # Save metadata
-        if download_options.save_metadata and convert_track.spotify_track:
-            convert_track.status = 5
-            self.after(100, self.queue_viewer.update_sheet_data)
-
-            try:
-                audio = MP3(output_path + ".mp3", ID3=ID3)
-            except ID3NoHeaderError:
-                audio.add_tags()
-
-            audio["TIT2"] = TIT2(
-                encoding=3, text=convert_track.spotify_track.name
-            )  # Title
-            audio["TPE1"] = TPE1(
-                encoding=3, text=", ".join(convert_track.spotify_track.artists)
-            )  # Artists
-            audio["TALB"] = TALB(
-                encoding=3, text=convert_track.spotify_track.album
-            )  # Album
-            audio["TOAL"] = TOAL(
-                encoding=3, text=convert_track.spotify_track.album
-            )  # Album
-
-            # Add album cover
-            if convert_track.spotify_track.cover:
-                with BytesIO() as img_byte_array:
-                    convert_track.spotify_track.cover.save(
-                        img_byte_array, format="JPEG"
-                    )  # Save as JPEG
-                    img_byte_array.seek(0)  # Rewind the file-like object
-
-                    # Add album cover image
-                    audio.tags.add(
-                        APIC(
-                            encoding=3,
-                            mime="image/jpeg",
-                            type=3,  # front cover
-                            desc="Cover",
-                            data=img_byte_array.read(),
-                        )
-                    )
-
-            # Embed lyrics
-            if download_options.embed_lyrics:
-                lyrics = syncedlyrics.search(
-                    convert_track.spotify_track.name
-                    + " "
-                    + convert_track.spotify_track.artists[0],
-                    plain_only=True,
+                match_results = convert_spotify_track_to_youtube(
+                    convert_track.spotify_track,
+                    search_count=download_options.youtube_search_limit,
+                    download_cover=download_options.download_covers,
                 )
-                if lyrics:
-                    audio["USLT"] = USLT(encoding=3, lang="eng", desc="", text=lyrics)
 
-            audio.save(v2_version=3)
+                best_match_url = match_results[0][1]
 
-        convert_track.status = 6
-        self.after(100, self.queue_viewer.update_sheet_data)
+                download_url = best_match_url
+
+                convert_track.status = 3
+                self.after(100, self.queue_viewer.update_sheet_data)
+
+            # Download track
+            convert_track.status = 4
+            self.after(100, self.queue_viewer.update_sheet_data)
+
+            if convert_track.spotify_track:
+                output_path = f"{download_options.output_folder}/{replace_alnum(convert_track.spotify_track.name)} {replace_alnum(convert_track.spotify_track.artists[0])}"
+
+            else:
+                output_path = f"{download_options.output_folder}/%(title)s"
+
+            ydl_opts = {
+                "format": "bestaudio",
+                "extractaudio": True,
+                # "audioformat": "mp3",
+                "outtmpl": output_path,
+                "postprocessors": [
+                    {
+                        "key": "FFmpegExtractAudio",
+                        "preferredcodec": "mp3",
+                        "preferredquality": "192",
+                    }
+                ],
+                "quiet": True,
+                "no_warnings": True,
+            }
+
+            with YoutubeDL(ydl_opts) as ydl:
+                ydl.download([download_url])
+
+            # Save metadata
+            if download_options.save_metadata and convert_track.spotify_track:
+                convert_track.status = 5
+                self.after(100, self.queue_viewer.update_sheet_data)
+
+                try:
+                    audio = MP3(output_path + ".mp3", ID3=ID3)
+                except ID3NoHeaderError:
+                    audio.add_tags()
+
+                audio["TIT2"] = TIT2(
+                    encoding=3, text=convert_track.spotify_track.name
+                )  # Title
+                audio["TPE1"] = TPE1(
+                    encoding=3, text=", ".join(convert_track.spotify_track.artists)
+                )  # Artists
+                audio["TALB"] = TALB(
+                    encoding=3, text=convert_track.spotify_track.album
+                )  # Album
+                audio["TOAL"] = TOAL(
+                    encoding=3, text=convert_track.spotify_track.album
+                )  # Album
+
+                # Add album cover
+                if convert_track.spotify_track.cover:
+                    with BytesIO() as img_byte_array:
+                        convert_track.spotify_track.cover.save(
+                            img_byte_array, format="JPEG"
+                        )  # Save as JPEG
+                        img_byte_array.seek(0)  # Rewind the file-like object
+
+                        # Add album cover image
+                        audio.tags.add(
+                            APIC(
+                                encoding=3,
+                                mime="image/jpeg",
+                                type=3,  # front cover
+                                desc="Cover",
+                                data=img_byte_array.read(),
+                            )
+                        )
+
+                # Embed lyrics
+                if download_options.embed_lyrics:
+                    lyrics = syncedlyrics.search(
+                        convert_track.spotify_track.name
+                        + " "
+                        + convert_track.spotify_track.artists[0],
+                        plain_only=True,
+                    )
+                    if lyrics:
+                        audio["USLT"] = USLT(encoding=3, lang="eng", desc="", text=lyrics)
+
+                audio.save(v2_version=3)
+
+            convert_track.status = 6
+            self.after(100, self.queue_viewer.update_sheet_data)
+        except Exception as exc:
+            if retries <= 0:
+                raise exc
+            else:
+                self.process_convert_track(convert_track, download_options, retries-1)
 
     def start_processing_queue(self, donwload_options: DownloadOptions):
         self.top_bar.disable_topbar()
